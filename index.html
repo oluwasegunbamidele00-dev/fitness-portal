@@ -513,7 +513,7 @@
       const reps = document.getElementById('new-reps').value;
       const newWorkout = { exercise, sets, reps, status: "Pending" };
 
-      fetch('http://localhost:3000/api/workouts', {
+      fetch('/api/workouts', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(newWorkout)
