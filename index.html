@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Apex Fitness | Client Portal (Standard CSS)</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&display=swap" rel="stylesheet">
+  
+  <style>
+    /* -----------------------------------------------------------
+        🛡️ GLOBAL RESET & BASE STYLES 
+       ----------------------------------------------------------- */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: #020617;
+      color: white;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column; 
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    body.authenticated {
+      align-items: flex-start;
+      justify-content: flex-start;
+    }
+
+    /* Utility Text Colors */
+    .color-slate-300 { color: #cbd5e1; }
+    .color-slate-400 { color: #94a3b8; }
+    .color-blue-500 { color: #3b82f6; }
+
+
+    /* -----------------------------------------------------------
+        🔓 1. LOGIN SCREEN STYLES
+       ----------------------------------------------------------- */
+    .login-container {
+      background-color: rgba(15, 23, 42, 0.5);
+      padding: 40px;
+      border-radius: 16px;
+      border: 1px solid #1e293b;
+      width: 100%;
+      max-width: 448px;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    }
+
+    .login-logo-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 32px;
+    }
+
+    .login-logo {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 56px;
+      height: 56px;
+      background-color: #2563eb;
+      border-radius: 12px;
+      margin-bottom: 16px;
+      font-size: 24px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+    }
+
+    .login-title {
+      font-size: 24px;
+      font-weight: 700;
+      letter-spacing: -0.025em;
+    }
+
+    .login-form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 14px;
+      font-weight: 500;
+      color: #cbd5e1;
+      margin-bottom: 6px;
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 12px 16px;
+      background-color: rgba(30, 41, 59, 0.5);
+      border: 1px solid #334155;
+      border-radius: 8px;
+      color: white;
+      font-size: 16px;
+      transition: all 0.2s ease;
+    }
+
+    .form-input:focus {
+      outline: none;
+      border-color: #3b82f6;
+    }
+
+    .btn-primary {
+      width: 100%;
+      padding: 14px 0;
+      background-color: #2563eb;
+      color: white;
+      font-weight: 600;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      letter-spacing: 0.025em;
+      transition: all 0.2s ease;
+      box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.3);
+    }
+
+    .btn-primary:hover {
+      background-color: #1d4ed8;
+      transform: translateY(-1px);
+    }
+
+    .error-text {
+      color: #ef4444;
+      font-size: 14px;
+      text-align: center;
+      margin-top: 8px;
+    }
+
+
+    /* -----------------------------------------------------------
+        🏋️‍♂️ 2. THE DASHBOARD STYLES
+       ----------------------------------------------------------- */
+    .dashboard-container {
+      width: 100%;
+      max-width: 1152px;
+      height: 85vh;
+      background-color: rgba(15, 23, 42, 0.4);
+      border-radius: 24px;
+      border: 1px solid #1e293b;
+      backdrop-filter: blur(20px);
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .dashboard-header {
+      height: 80px;
+      border-bottom: 1px solid #1e293b;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 32px;
+      flex-shrink: 0;
+    }
+
+    .btn-secondary {
+      padding: 8px 16px;
+      font-size: 14px;
+      font-weight: 500;
+      background-color: #1e293b;
+      color: white;
+      border-radius: 8px;
+      border: 1px solid #334155;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-secondary:hover {
+      background-color: #334155;
+    }
+
+    .dashboard-content {
+      flex: 1;
+      padding: 32px;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 24px;
+      overflow-y: auto;
+    }
+
+    @media (min-width: 1024px) {
+      .dashboard-content {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+      .col-span-2 {
+        grid-column: span 2 / span 2;
+      }
+    }
+
+    .panel-section {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .panel-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: #e2e8f0;
+    }
+
+    .vital-card {
+      background-color: rgba(30, 41, 59, 0.5);
+      padding: 24px;
+      border-radius: 12px;
+      border: 1px solid rgba(51, 65, 85, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .vital-value {
+      font-size: 24px;
+      font-weight: 800;
+      margin-top: 4px;
+    }
+
+    .vital-icon {
+      font-size: 30px;
+    }
+
+    .workout-table-container {
+      background-color: rgba(30, 41, 59, 0.5);
+      border-radius: 12px;
+      border: 1px solid rgba(51, 65, 85, 0.5);
+      overflow: hidden;
+    }
+
+    .workout-table {
+      width: 100%;
+      text-align: left;
+      font-size: 14px;
+      border-collapse: collapse;
+    }
+
+    .workout-table-head {
+      background-color: #1e293b;
+      color: #cbd5e1;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .workout-table-cell {
+      padding: 16px 24px;
+    }
+
+    .workout-table-row {
+      border-bottom: 1px solid #1e293b;
+      transition: all 0.2s;
+    }
+
+    .workout-table-row:last-child {
+      border-bottom: none;
+    }
+
+    .workout-table-row:hover {
+      background-color: rgba(30, 41, 59, 0.3);
+    }
+
+    /* 🛡️ FIXED BADGE STYLES TO MATCH JS LOOP */
+    .status-badge {
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 12px;
+    }
+
+    .status-badge.completed {
+      background-color: rgba(16, 185, 129, 0.2);
+      color: #34d399;
+    }
+
+    .status-badge.pending {
+      background-color: rgba(234, 179, 8, 0.2);
+      color: #facc15;
+    }
+
+    .btn-complete {
+      width: 100%;
+      padding: 16px 0;
+      background-color: #059669;
+      color: white;
+      font-weight: 700;
+      border-radius: 12px;
+      border: none;
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.2s ease;
+      box-shadow: 0 10px 15px -3px rgba(5, 150, 105, 0.2);
+    }
+
+    .btn-complete:hover {
+      background-color: #047857;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="login-screen" class="login-container">
+    <div class="login-logo-container">
+      <div class="login-logo">AF</div>
+      <h1 class="login-title">Apex Fitness</h1>
+      <p class="color-slate-400" style="font-size: 14px; margin-top: 4px;">Enter credentials to view your workouts</p>
+    </div>
+
+    <form id="login-form">
+      <div class="login-form-group">
+        <label class="form-label">Username</label>
+        <input type="text" id="username" required class="form-input">
+      </div>
+      <div class="login-form-group">
+        <label class="form-label">Password</label>
+        <input type="password" id="password" required class="form-input">
+      </div>
+      <button type="submit" class="btn-primary">Unlock Dashboard</button>
+      <p id="error-message" class="error-text hidden">Invalid username or password.</p>
+    </form>
+  </div>
+
+
+  <div id="dashboard" class="dashboard-container hidden">
+    
+    <header class="dashboard-header">
+      <div>
+        <h2 style="font-size: 20px; font-weight: 700;">Welcome Back, Champ! 👋</h2>
+        <p style="font-size: 12px;" class="color-slate-400">Let's crush today's fitness goals.</p>
+      </div>
+      <button id="logout-btn" class="btn-secondary">Log Out</button>
+    </header>
+
+    <main class="dashboard-content">
+      
+      <div class="panel-section">
+        <h3 class="panel-title">Daily Vitals</h3>
+        
+        <div class="vital-card">
+          <div>
+            <p style="font-size: 14px;" class="color-slate-400">Calories Burned</p>
+            <h4 class="vital-value">1,850 <span style="font-size: 12px;" class="color-slate-400">kcal</span></h4>
+          </div>
+          <div class="vital-icon">🔥</div>
+        </div>
+
+        <div class="vital-card">
+          <div>
+            <p style="font-size: 14px;" class="color-slate-400">Water Intake</p>
+            <h4 class="vital-value">2.4 <span style="font-size: 12px;" class="color-slate-400">Liters</span></h4>
+          </div>
+          <div class="vital-icon">💧</div>
+        </div>
+
+        <div class="vital-card">
+          <div>
+            <p style="font-size: 14px;" class="color-slate-400">Sleep Score</p>
+            <h4 class="vital-value">84 <span style="font-size: 12px;" class="color-slate-400">/ 100</span></h4>
+          </div>
+          <div class="vital-icon">🌙</div>
+        </div>
+      </div>
+
+      <div class="col-span-2 panel-section">
+        <h3 class="panel-title">Today's Routine: <span class="color-blue-500">Upper Body Power</span></h3>
+        
+        <div class="workout-table-container">
+          <table id="workout-table" class="workout-table">
+            <thead class="workout-table-head">
+              <tr>
+                <th class="workout-table-cell">Exercise</th>
+                <th class="workout-table-cell">Sets</th>
+                <th class="workout-table-cell">Reps</th>
+                <th class="workout-table-cell">Status</th>
+                <th class="workout-table-cell">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+            </tbody>
+          </table>
+        </div>
+
+        <button id="complete-all-btn" class="btn-complete">
+          Mark Workout as Complete ✅
+        </button>
+      </div>
+      
+      <div class="panel-section">
+        <h3 class="panel-title">Add New Workout</h3>
+
+        <form id="add-workout-form" class="vital-card" style="flex-direction: column; align-items: stretch; gap: 16px;">
+          <div>
+            <label class="form-label">Exercise Name</label>
+            <input type="text" id="new-exercise" class="form-input" placeholder="e.g. Deadlifts" required>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+            <div>
+              <label class="form-label">Sets</label>
+              <input type="number" id="new-sets" class="form-input" placeholder="4" min="0" required>
+            </div>
+            <div>
+              <label class="form-label">Reps</label>
+              <input type="text" id="new-reps" class="form-input" placeholder="10-12" required>
+            </div>
+          </div>
+
+          <button type="submit" class="btn-primary" style="padding: 12px 0;">Add to Routine +</button>
+        </form>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    const completeAllBtn = document.getElementById('complete-all-btn');
+    const loginForm = document.getElementById('login-form');
+    const usernameInput = document.getElementById('username');
+    const passwordInput = document.getElementById('password');
+    const errorMessage = document.getElementById('error-message');
+    
+    const loginScreen = document.getElementById('login-screen');
+    const dashboard = document.getElementById('dashboard');
+    const logoutBtn = document.getElementById('logout-btn');
+    const addWorkoutForm = document.getElementById('add-workout-form');
+
+    const VALID_USER = "segun";
+    const VALID_PASS = "bamidele1234@";
+
+    // ✅ LOGIN TRIGGER
+    loginForm.addEventListener('submit', (e) => {
+      e.preventDefault(); 
+
+      if (usernameInput.value === VALID_USER && passwordInput.value === VALID_PASS) {
+        errorMessage.classList.add('hidden');
+        
+        loginScreen.classList.add('hidden');
+        dashboard.classList.remove('hidden');
+
+        document.body.classList.add('authenticated');
+        loadWorkoutsFromBackend();
+      } else {
+        errorMessage.classList.remove('hidden');
+      }
+    });
+
+    // ❌ LOGOUT TRIGGER
+    logoutBtn.addEventListener('click', () => {
+      dashboard.classList.add('hidden');
+      loginScreen.classList.remove('hidden');
+      
+      document.body.classList.remove('authenticated');
+
+      usernameInput.value = '';
+      passwordInput.value = '';
+    });
+
+    function loadWorkoutsFromBackend() {
+      fetch('http://localhost:3000/api/workouts')
+        .then(response => response.json())
+        .then(data => {
+          console.log("✅ Workouts received from Node.js:", data);
+
+          const tableBody = document.querySelector('#workout-table tbody');
+
+          if (!tableBody) {
+            console.error("❌ Could not find #workout-table tbody in your HTML!")
+            return;
+          }
+
+          tableBody.innerHTML = '';
+
+          // 🎯 Swapped in your new loop right here inside loadWorkoutsFromBackend!
+          data.forEach(workout => {
+            const row = `
+              <tr class="workout-table-row">
+                <td class="workout-table-cell" style="font-weight: 500;">${workout.exercise}</td>
+                <td class="workout-table-cell">${workout.sets}</td>
+                <td class="workout-table-cell">${workout.reps}</td>
+                <td class="workout-table-cell">
+                  <span class="status-badge ${workout.status.toLowerCase()}">${workout.status}</span>
+                </td>
+                <td class="workout-table-cell">
+                  ${workout.status === "Pending" ? 
+                    `<button onclick="completeSingleWorkout(${workout.id})" style="background: #059669; color: white; border: none; padding: 6px 10px; border-radius: 6px; cursor: pointer; font-size: 12px;">Complete ✓</button>` 
+                    : '🎉'
+                  }
+                </td>
+              </tr>
+            `;
+            tableBody.innerHTML += row;
+          });
+        })
+        .catch(error => {
+          console.error("❌ Oops! Couldn't reach the backend:", error)
+        });
+    }
+
+    addWorkoutForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const exercise = document.getElementById('new-exercise').value;
+      const sets = document.getElementById('new-sets').value;
+      const reps = document.getElementById('new-reps').value;
+      const newWorkout = { exercise, sets, reps, status: "Pending" };
+
+      fetch('http://localhost:3000/api/workouts', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(newWorkout)
+      })
+      .then(response => response.json())
+      .then(data => {
+        addWorkoutForm.reset();
+        loadWorkoutsFromBackend();
+      })
+      .catch(error => console.error("❌ Error adding  workout:", error));
+    });
+
+    completeAllBtn.addEventListener('click', () => {
+      fetch('http://localhost:3000/api/workouts/complete', {
+        method: 'PUT', 
+        headers: { 'Content-Type': 'application/json' }
+      })
+      .then(response => response.json())
+      .then(data => {
+        console.log("Server updated successfully");
+        loadWorkoutsFromBackend();
+      })
+      .catch(error => console.error("Error updating workouts:", error));
+
+    });
+
+    function completeSingleWorkout(id) {
+      fetch(`http://localhost:3000/api/workouts/${id}/complete`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' }
+      })
+      .then(response => response.json())
+      .then(data => {
+        console.log(`Workout ${id} marked complete!`);
+        loadWorkoutsFromBackend();
+      })
+      .catch(error => console.error("Error completing workout:", error));
+    }
+
+  </script>
+</body>
+</html>
