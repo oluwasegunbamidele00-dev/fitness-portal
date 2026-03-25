@@ -1,10 +1,15 @@
-const express = require('express'); // 1. Load the Express kitchen
+const express = require('express'); 
 const cors = require('cors');
-const app = express();              // 2. Create an instance of our server
-const PORT = 3000;                  // 3. Set the radio frequency (Port 3000)
-app.use(cors());
+const path = require('path'); // 🛠️ ADDED: Helps find your HTML file!
 
+const app = express();              
+const PORT = 3000;                  
+
+app.use(cors());
 app.use(express.json());
+
+// 🛠️ ADDED: Tell Express to serve your HTML, CSS, and Frontend JS files!
+app.use(express.static(__dirname));
 
 const personalWorkouts = [
     { id: 1, exercise: "Barbell Bench Press", sets: 4, reps: "8 - 10", status: "Completed" },
@@ -13,12 +18,13 @@ const personalWorkouts = [
     { id: 4, exercise: "Tricep Pushdowns", sets: 4, reps: "15", status: "Pending" }
 ];
 
-app.get('/api/workouts', (request, response) => {
-    response.json(personalWorkouts);
+// 🛠️ UPDATED: This now sends your index.html file to the browser!
+app.get('/', (request, response) => {
+    response.sendFile(path.join(__dirname, 'index.html'));
 });
 
-app.get('/', (request, response) => {
-    response.send('<h1>🏋️‍♂️ Welcome to the Apex Fitness Secure Vault!</h1>')
+app.get('/api/workouts', (request, response) => {
+    response.json(personalWorkouts);
 });
 
 app.post('/api/workouts', (req, res) => {
@@ -27,7 +33,7 @@ app.post('/api/workouts', (req, res) => {
     personalWorkouts.push(newWorkout);
     console.log("New Workout added with ID:", newWorkout.id);
     res.status(201).json({ message: "Workout added successfully!", data: newWorkout });
-})
+});
 
 app.put('/api/workouts/:id/complete', (req, res) => {
     const workoutId = parseInt(req.params.id);
@@ -38,7 +44,7 @@ app.put('/api/workouts/:id/complete', (req, res) => {
         console.log(`Workout ID ${workoutId} marked as Completed!`);
         res.json({ message: "Workout updated successfully!", data: workoutToUpdate});
     } else {
-        res.status(404).json({ message: "Workout not found!" })
+        res.status(404).json({ message: "Workout not found!" });
     }
 });
 
